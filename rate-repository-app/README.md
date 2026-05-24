@@ -20,6 +20,18 @@ Continuing development, I will employ Expo Go with the Vostro, and Android Studi
 
 In all cases, start the app with 'npm start'. Using this startup, the Pixel-8 emulator may fail to sychromise with the app. If this happens, with the emulator window in focus, press 'r' twice quickly. This triggers a reload. If it still fails to synchronise, restart using 'npm run android'.
 
+### Exercise 2. Setting up the ESLint.
+
+ESLint setup per instructions. When first run, no warnings or errors were issued. Thus, a test was introduced to confirm that ESLint was correctly setup.
+
+Code added to top of App.js, in order to force known warnings:
+
+    // ESLint test: This will trigger "no-unused-vars".
+    const unusedVariable = "I am a ghost";
+    // This will then trigger "import/first" (on two lines).
+    import { StatusBar } from "expo-status-bar";
+    import { StyleSheet, Text, View } from "react-native";
+
 ---
 
 ## END
