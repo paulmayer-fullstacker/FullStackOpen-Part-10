@@ -32,6 +32,10 @@ Code added to top of App.js, in order to force known warnings:
     import { StatusBar } from "expo-status-bar";
     import { StyleSheet, Text, View } from "react-native";
 
+### Exercise 3. The reviewed repositories list.
+
+The code has been commented with inline documentation.
+
 ---
 
 ## END
