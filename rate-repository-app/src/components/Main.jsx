@@ -3,6 +3,7 @@
 import Constants from "expo-constants";
 import { StyleSheet, View } from "react-native";
 import RepositoryList from "./RepositoryList"; // Import the list of items
+import Text from "./Text"; // Import the text styling object.
 
 const styles = StyleSheet.create({
   container: {
@@ -25,8 +26,15 @@ const styles = StyleSheet.create({
 
 const Main = () => {
   return (
-    // View acts like a <div>. Here it applies the container styles to the entire screen.
     <View style={styles.container}>
+      <Text>Simple text</Text>
+      <Text style={{ paddingBottom: 10 }}>Text with custom style</Text>
+      <Text fontWeight="bold" fontSize="subheading">
+        Bold subheading
+      </Text>
+      <Text color="textSecondary">Text with secondary color</Text>
+      {/* // View acts like a <div>. Here it applies the container styles to the entire screen. */}
+      {/* <View style={styles.container}> */}
       <RepositoryList />
     </View>
   );
