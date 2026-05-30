@@ -32,9 +32,23 @@ Code added to top of App.js, in order to force known warnings:
     import { StatusBar } from "expo-status-bar";
     import { StyleSheet, Text, View } from "react-native";
 
+## Chapter 3
+
 ### Exercise 3. The reviewed repositories list.
 
 The code has been commented with inline documentation.
+
+### Exercise 4. The app bar.
+
+In this exercise, I've gone beyond the basic requirements of the exercise. Here are some of the additional features:
+
+- Modular Design: I separated the tab logic into a reusable AppBarTab component. This allowed for clean testing of multiple tabs without duplicating code.
+
+- Interactive Elements: Each tab is wrapped in a Pressable component. I couldn't implement a pressable component, without testing the onPress event functionallity. So, I verified the touch functionality by implementing an onPress alert (and console log), that dynamically displays the tab's title.
+
+- Styling: I used flexDirection: 'row' for tab alignment and Constants.statusBarHeight to ensure the bar sits correctly below the device status indicators.
+
+The main obstacle was my development platform (Dell Vostro). A phantom task, installed with and automatically started by EDB Postgres Enterprise Manager (PEM), would inexplicably take control of prort 8081. My inexperiance with the new development tools, and the unexpected presence of Postgres, slowed my progress, considerably. 
 
 ---
 
