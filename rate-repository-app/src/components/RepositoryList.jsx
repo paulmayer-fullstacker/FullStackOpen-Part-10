@@ -18,8 +18,8 @@ const repositories = [
     fullName: "jaredpalmer/formik",
     description: "Build forms in React, without the tears",
     language: "TypeScript",
-    forksCount: 1589,
-    stargazersCount: 21553,
+    forksCount: 1589,   // 000000 added for G test
+    stargazersCount: 21553,  // 000 added for M test
     ratingAverage: 88,
     reviewCount: 4,
     ownerAvatarUrl: "https://avatars2.githubusercontent.com/u/4060187?v=4"

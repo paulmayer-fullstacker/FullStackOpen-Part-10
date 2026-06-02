@@ -9,6 +9,7 @@ const theme = {
     primary: "#0366d6",  // Main brand color used for primary actions/links.
     appBarBackground: "#465d74", // AppBar colour defines the background for the top navigation bar.
     appBarText: "#ffffff",       // Contrast color for text sitting on the darker AppBar background (visibility).
+    mainComponentBackground: "#e1e4e8",  // Light gray background per Ex-5 instructions.
   },
   fontSizes: {
     body: 14,   // Default font size for standard text blocks.
