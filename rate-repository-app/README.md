@@ -48,13 +48,18 @@ In this exercise, I've gone beyond the basic requirements of the exercise. Here 
 
 - Styling: I used flexDirection: 'row' for tab alignment and Constants.statusBarHeight to ensure the bar sits correctly below the device status indicators.
 
-The main obstacle was my development platform (Dell Vostro). A phantom task, installed with and automatically started by EDB Postgres Enterprise Manager (PEM), would inexplicably take control of port 8081. My inexperience with the new development tools, and the unexpected presence of Postgres, slowed my progress, considerably. 
+The main obstacle was my development platform (Dell Vostro). A phantom task, installed with and automatically started by EDB Postgres Enterprise Manager (PEM), would inexplicably take control of port 8081. My inexperience with the new development tools, and the unexpected presence of Postgres, slowed my progress, considerably.
 
 ### Exercise 5. Polished reviewed repositories list
 
-Here, my work exceeded the exercise requirements, in formatting the precision of count values. My initial design (for RepositoryItem.jsx), included a table look-up to identify 'k', 'M', and 'G' values and display them in compact notation. This seemed a sensible, scalable solution. However, on reflection, it represented a lot of unnecessary code. So, this was pared back, to a simple if statement, in order to capture 'k' values only. 
+Here, my work exceeded the exercise requirements, in formatting the precision of count values. My initial design (for RepositoryItem.jsx), included a table look-up to identify 'k', 'M', and 'G' values and display them in compact notation. This seemed a sensible, scalable solution. However, on reflection, it represented a lot of unnecessary code. So, this was pared back, to a simple if statement, in order to capture 'k' values only.
 
 I couldn't commit all that work, and then delete it. So, the original code remains, commented out.
+
+### Exercise 6. The sign-in view
+
+Turns out that my Saamsung Galaxy A10 (Android device), is not a reliable test platform.
+StatusBar style="light" woulld not work as anticipated, hiding the status icons completely. Regardles of what style I used, I could not get the device to render the icons. Resorting to my Pixel-8 emulation (via Android Studio), the emulation did render the status icons correctly.
 
 ---
 
