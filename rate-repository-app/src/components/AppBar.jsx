@@ -61,7 +61,8 @@ const AppBar = () => {
         {/* Pass the "to" prop (<Link> to) to point to the correct paths configured in Main.jsx */}
         <AppBarTab title="Repositories" to="/" />
         <AppBarTab title="Sign in" to="/signin" />
-        <AppBarTab title="Repositories" to="/" />
+         {/* ** BMI and Scrolling. Remove after testing */}
+        <AppBarTab title="BMI Calculator" to="/bmicalculator" />
         <AppBarTab title="Sign in" to="/signin" />
         <AppBarTab title="Repositories" to="/" />
         <AppBarTab title="Sign in" to="/signin" />
