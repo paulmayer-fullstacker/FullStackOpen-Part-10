@@ -2,7 +2,7 @@
 //  Defining the top-level nav bar for the app. Utilising a custom styling theme and a reusable sub-component (AppBarTab),
 //  to create a consistent header that responds to user touch and manages device status bar spacing for mobile devices.
 
-import { View, StyleSheet, ScrollView, } from "react-native"; // Pull core functions blocks from React Native.
+import { View, StyleSheet, ScrollView } from "react-native"; // Pull core functions blocks from React Native.
 import { Link } from "react-router-native"; // Import Link from react-router-native, to manage routing transitions.
 import Constants from "expo-constants"; // Used to access device metadata (i.e., height of the device status bar).
 import theme from "../theme"; // Imports our centralized design themes (colors, fonts),  keeping the UI consistent across the app.
@@ -13,14 +13,14 @@ const styles = StyleSheet.create({
   container: {
     paddingTop: Constants.statusBarHeight, // Prevents the content from being hidden under the phone's status bar or the status bar being hidden by content.
     backgroundColor: theme.colors.appBarBackground, // Set the background color based on your theme.
-    display: "flex", // Redundant. Views use flexbox layout by default in React Native.
+    display: "flex" // Redundant. Views use flexbox layout by default in React Native.
     //flexDirection: "row" // Removed. Child is now a single ScroolView, that fills the parent container. row styling now managed by the ScrollView container.
   },
   // Define style object specifically for the ScrollView's inner content container. - ScrollViews do not behave like standard Views.
-  // Layout styles applied to ScrollView's standard `style` prop affect the scrollable viewport boundary, not the content inside it. 
+  // Layout styles applied to ScrollView's standard `style` prop affect the scrollable viewport boundary, not the content inside it.
   scrollViewContentContainer: {
-    flexDirection: "row",  // Aligns the child tabs horizontally in a single row inside the scrollable track.
-    alignItems: "center", // Keep tabs vertically centered if they have different heights.
+    flexDirection: "row", // Aligns the child tabs horizontally in a single row inside the scrollable track.
+    alignItems: "center" // Keep tabs vertically centered if they have different heights.
   },
   tabTouchable: {
     padding: 15 //Add a 15 unit padding around the text to create a larger, easier-to-hit 'touch target'.
@@ -56,14 +56,12 @@ const AppBar = () => {
     <View style={styles.container}>
       {/* // Wrap the tabs inside a <crollView component. */}
       {/* horizontal={true}: Changes scrolling axis from V to H and automatically sets up a internal H layout. */}
-      <ScrollView horizontal contentContainerStyle={styles.scrollViewContentContainer}>
+      <ScrollView
+        horizontal
+        contentContainerStyle={styles.scrollViewContentContainer}
+      >
         {/* AppBarTab: Instance of our sub-component. We currently have two tabs: "Repositories" and "Sign In." */}
         {/* Pass the "to" prop (<Link> to) to point to the correct paths configured in Main.jsx */}
-        <AppBarTab title="Repositories" to="/" />
-        <AppBarTab title="Sign in" to="/signin" />
-         {/* ** BMI and Scrolling. Remove after testing */}
-        <AppBarTab title="BMI Calculator" to="/bmicalculator" />
-        <AppBarTab title="Sign in" to="/signin" />
         <AppBarTab title="Repositories" to="/" />
         <AppBarTab title="Sign in" to="/signin" />
       </ScrollView>
