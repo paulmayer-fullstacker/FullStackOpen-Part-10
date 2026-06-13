@@ -19,7 +19,8 @@ const styles = StyleSheet.create({
     borderRadius: 10, // Rounded corners.
     padding: 15, // Padding inside the box for text.
     // marginBottom: 15, // Space between inputs and Submit button. Removed to accommodate error message.
-    fontSize: 16
+    fontFamily: theme.fonts.platformSpecificFontFormat, // Added so text typed inside the form matches the global theme.
+    fontSize: theme.fontSizes.subheading // Adhear to global theme.
   },
   inputError: {
     borderColor: "red" // Red border colour for validation failure.
@@ -41,7 +42,7 @@ const styles = StyleSheet.create({
   buttonText: {
     color: "white", // White text colour - contrast.
     fontWeight: theme.fontWeights.bold, // Bold text weight.
-    fontSize: 16
+    fontSize: theme.fontSizes.subheading
   }
 });
 

@@ -75,7 +75,11 @@ After walking through the Body Mass Index example, this was reasonably straightf
 
 When the user does successfully log in, there is no feedback (login button does not change colour, and the input fields are not cleared). If this is not addressed in the next few exercises, I will have to implement a fix independently.
 
-###
+### Exercise 10 (A platform-specific font)
+
+I defined platform conditional font styling within the theme.js file, using platformSpecificFontFormat: Platform.select({}). I then updated the Text.jsx and SignIn.jsx files to employ the newly defined platformSpecificFontFormat design token.
+
+To test the Platform.select() function, using only a web browser and an Android device, I switched the fonts within the design token definition, and noted the font changes that resulted.
 
 ---
 

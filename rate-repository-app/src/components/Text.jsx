@@ -11,7 +11,7 @@ const styles = StyleSheet.create({
     // Default styles applied to content in every instance of the component.
     color: theme.colors.textPrimary,
     fontSize: theme.fontSizes.body,
-    fontFamily: theme.fonts.main,
+    fontFamily: theme.fonts.platformSpecificFontFormat, // Connect our component to the Platform.select() logic defined in theme.js.
     fontWeight: theme.fontWeights.normal
   },
   // Alternative styling based on Conditional Style Composition
