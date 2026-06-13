@@ -18,7 +18,7 @@ I faced two issues when setting up the development environments:
 
 Continuing development, I will employ Expo Go with the Vostro, and Android Studio with the Latitude.
 
-In all cases, start the app with 'npm start'. Using this startup, the Pixel-8 emulator may fail to synchromise with the app. If this happens, with the emulator window in focus, press 'r' twice quickly. This triggers a reload. If it still fails to synchronise, restart using 'npm run android'.
+In all cases, start the app with 'npm start'. Using this startup, the Pixel-8 emulator may fail to synchronise with the app. If this happens, with the emulator window in focus, press 'r' twice quickly. This triggers a reload. If it still fails to synchronise, restart using 'npm run android'.
 
 ### Exercise 2. Setting up the ESLint.
 
@@ -58,8 +58,24 @@ I couldn't commit all that work, and then delete it. So, the original code remai
 
 ### Exercise 6. The sign-in view
 
-Turns out that my Saamsung Galaxy A10 (Android device), is not a reliable test platform.
-StatusBar style="light" woulld not work as anticipated, hiding the status icons completely. Regardles of what style I used, I could not get the device to render the icons. Resorting to my Pixel-8 emulation (via Android Studio), the emulation did render the status icons correctly.
+Turns out that my Samsung Galaxy A10 (Android device), is not a reliable test platform.
+StatusBar style="light" would not work as anticipated, hiding the status icons completely. Regardless of what style I used, I could not get the device to render the icons. Resorting to my Pixel-8 emulation (via Android Studio), the emulation did render the status icons correctly.
+
+### Exercise 7 (Scrollable app bar), & 8 (The sign-in form)
+
+Exercise 7 completed and committed while 'out-of-office'. App not fully tested.
+
+BMI Calculator integrated into app, for practise and testing with Formik.
+
+Exercise 8 completed. Both exercises 7 and 8 fully tested. Code cleaned up (i.e., BMI Calculator removed). Code committed to GitHub.
+
+### Exercise 9 (Validating the sign-in form)
+
+After walking through the Body Mass Index example, this was reasonably straightforward. The greatest (and most time consuming) challenge was conditional styling of the margin between elements.
+
+When the user does successfully log in, there is no feedback (login button does not change colour, and the input fields are not cleared). If this is not addressed in the next few exercises, I will have to implement a fix independently.
+
+###
 
 ---
 
