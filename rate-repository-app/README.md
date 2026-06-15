@@ -83,6 +83,19 @@ To test the Platform.select() function, using only a web browser and an Android 
 
 ---
 
+## Chapter 4
+
+### Exercise 11
+
+Use GET request scripts in `rate-repository-api/requests.rest` to run initial tests against the backend endpoints.
+
+New rule added to the .gitignore file:
+
+```text
+    # backend project
+    rate-repository-api/
+```
+
 ## END
 
 ---

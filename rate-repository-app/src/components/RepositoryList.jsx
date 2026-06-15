@@ -1,8 +1,9 @@
-// /src/components/RepositoryList.jsx:
-// Manages the data array and configures the FlatList to iterate over the repositories.
+// /src/components/RepositoryList.jsx
+// Manages the data array fetched from the server and configures the FlatList to iterate over the repositories.
+
 import { FlatList, View, StyleSheet } from "react-native";
-// Import our item component so that each individual item can be rendered, in the list of items.
-import RepositoryItem from "./RepositoryItem";
+import RepositoryItem from "./RepositoryItem"; // Import our item component so that each individual item can be rendered in the list.
+import useRepositories from "../hooks/useRepositories"; // Import useRepositories custom hook
 
 const styles = StyleSheet.create({
   // Define a visual gap between list items.
@@ -11,68 +12,33 @@ const styles = StyleSheet.create({
   }
 });
 
-// Array of objects (items) containing GitHub repository details.
-const repositories = [
-  {
-    id: "jaredpalmer.formik",
-    fullName: "jaredpalmer/formik",
-    description: "Build forms in React, without the tears",
-    language: "TypeScript",
-    forksCount: 1589,   // 000000 added for G test
-    stargazersCount: 21553,  // 000 added for M test
-    ratingAverage: 88,
-    reviewCount: 4,
-    ownerAvatarUrl: "https://avatars2.githubusercontent.com/u/4060187?v=4"
-  },
-  {
-    id: "rails.rails",
-    fullName: "rails/rails",
-    description: "Ruby on Rails",
-    language: "Ruby",
-    forksCount: 18349,
-    stargazersCount: 45377,
-    ratingAverage: 100,
-    reviewCount: 2,
-    ownerAvatarUrl: "https://avatars1.githubusercontent.com/u/4223?v=4"
-  },
-  {
-    id: "django.django",
-    fullName: "django/django",
-    description: "The Web framework for perfectionists with deadlines.",
-    language: "Python",
-    forksCount: 21015,
-    stargazersCount: 48496,
-    ratingAverage: 73,
-    reviewCount: 5,
-    ownerAvatarUrl: "https://avatars2.githubusercontent.com/u/27804?v=4"
-  },
-  {
-    id: "reduxjs.redux",
-    fullName: "reduxjs/redux",
-    description: "Predictable state container for JavaScript apps",
-    language: "TypeScript",
-    forksCount: 13902,
-    stargazersCount: 52869,
-    ratingAverage: 0,
-    reviewCount: 0,
-    ownerAvatarUrl: "https://avatars3.githubusercontent.com/u/13142323?v=4"
-  }
-];
-
-// Helper component used to render a spacer between each list item row
+// Helper component used to render a spacer between each list item row.
 const ItemSeparator = () => <View style={styles.separator} />;
 
 const RepositoryList = () => {
+  // Refactored code: Replaced local useState, useEffect, and fetchRepositories with the /src/hooks/useRepositories.js custom hook.
+  // Extract the 'repositories' data state directly from useRepositories.js.
+  const { repositories } = useRepositories();
+
+  // Get the nodes from the edges array. If 'repositories' is still undefined (when fetching), default safely to an empty array.
+  const repositoryNodes =
+    // Ternary operator: If 'repositories' is true (exists), .mao() through its 'edges' array, extracting the inner
+    //  "node" object (which contains the actual repository data) from each "edge" object. Creating a flat array.
+    repositories
+      ? repositories.edges.map((edge) => edge.node)
+      : // If 'repositories' is false (still loading or undefined [null]), default to an empty array[].
+        [];
+
   return (
     // Flatlist: An iterator that traverses an array one index at a time.
     <FlatList
-      // The array of data to be rendered
-      data={repositories}
-      // Renders the ItemSeparator component between items (but not at the top or bottom). Flatlist skips the first item, as this is a separator, not a margin.
+      // The array of data to be rendered. Array 'repositoryNodes' has been extracted from the server (above).
+      data={repositoryNodes}
+      // Renders the ItemSeparator component between items (but not at the top or bottom).
       ItemSeparatorComponent={ItemSeparator}
-      // Assign a unique key to each item, so that React can find and manage the item. The unique key helps React with re-rendering performance.
+      // Assign a unique key to each item so that React can track and optimize rendering.
       keyExtractor={(item) => item.id}
-      // Destructure the current 'item' from the data array and pass it to the RepositoryItem, to be rendered.
+      // Destructure the current 'item' from the data array and pass it to the RepositoryItem.
       renderItem={({ item }) => <RepositoryItem item={item} />}
     />
   );

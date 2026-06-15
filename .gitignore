@@ -175,3 +175,6 @@ yarn-error.*
 # generated native folders
 /ios
 /android
+
+# backend project
+rate-repository-api/
