@@ -96,6 +96,10 @@ New rule added to the .gitignore file:
     rate-repository-api/
 ```
 
+Implement GrapgQL query in the frontend, to fetch the Repository List from the backend. New feature fully tested, using Android Studio and Expo Go.
+
+Problem encountered due to my import of useQuery into useRepositories. Remember: import { useQuery } from "@apollo/client/react", not from "@apollo/client".
+
 ## END
 
 ---
