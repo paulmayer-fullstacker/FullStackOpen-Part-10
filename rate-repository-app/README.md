@@ -100,6 +100,19 @@ Implement GrapgQL query in the frontend, to fetch the Repository List from the b
 
 Problem encountered due to my import of useQuery into useRepositories. Remember: import { useQuery } from "@apollo/client/react", not from "@apollo/client".
 
+### Exercise 12
+
+Environmental variabled defined within .env file. Thus:
+
+```text
+# .env:
+
+EXPO_PUBLIC_ENV=test
+# EXPO_PUBLIC_APOLLO_URI=http://<Expo IP address>:4000/graphql. Note: Quotation marks not required.
+# Replace <Expo IP address> with IP address from Metro: exp://192.168.1.149:8081 (below QR code), i.e.: 192.168.1.149.
+EXPO_PUBLIC_APOLLO_URI=http://192.168.1.149:4000/graphql
+```
+
 ## END
 
 ---
