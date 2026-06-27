@@ -15,6 +15,7 @@ import createApolloClient from "./src/utils/apolloClient";
 const apolloClient = createApolloClient();
 
 const App = () => {
+  console.log("env check:", process.env.EXPO_PUBLIC_ENV); // Logs 'env check: test' when the app starts up on the client.
   // Render the 'Main' architectural component of the app.
   return (
     // React Fragment (<>): Groups multiple elements together without adding an extra node to the view hierarchy. */}
