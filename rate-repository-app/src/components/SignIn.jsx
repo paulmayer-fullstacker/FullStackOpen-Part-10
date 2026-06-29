@@ -7,6 +7,8 @@ import * as yup from "yup"; // Import all exports from Yup as an object to decla
 import Text from "./Text"; // Using our custom Text component for consistent typography.
 import theme from "../theme"; // Importing our centralised theme.
 
+import useSignIn from "../hooks/useSignIn"; // Import our custom sign-in hook to connect to the GraphQL backend.
+
 // Define the layout and component styling:
 const styles = StyleSheet.create({
   container: {
@@ -73,7 +75,7 @@ const initialValues = {
 
 // Presentational component holding the form elements
 const SignInForm = ({ onSubmit }) => {
-  // // Invoke Formik hook.
+  // Invoke Formik hook.
   const formik = useFormik({
     initialValues,
     validationSchema, // Integrate the validation schema.
@@ -135,10 +137,23 @@ const SignInForm = ({ onSubmit }) => {
 
 // Main container component, handling business logic.
 const SignIn = () => {
-  const onSubmit = (values) => {
-    console.log(values); // Submission for Exercise-8 just logs the values object.
-    // // Explicit print properties sequentially { username: '...', password: '...' }, overriding JS's object key ordering.
-    // console.log(`Username: ${values.username}, Password: ${values.password}`);
+  // Initialize our custom hook. Destructure the signIn trigger function from the hook's returned tuple [signIn, result].
+  const [signIn] = useSignIn();
+  // onSubmit now asynchronous, to handle the network request promise sent by our useSignIn custom hook.
+  const onSubmit = async (values) => {
+    const { username, password } = values;
+    try {
+      // Execute the custom hook's signIn function, passing in username/password credentials form values.
+      const { data } = await signIn({ username, password }); // Destructure 'data' out of the returned network payload.
+      // Log the resultant 'data' to confirm valid access token.
+      // console.log(data); // Improved o/p
+      // The token arrives in 'data.authenticate.accessToken'. However, it is only logged (not saved), at this point.
+      console.log(username, "authenticated, with payload data:", data);
+      // else: catch the error.
+    } catch (e) {
+      // Display any errors thrown during mutation execution (e.g., bad credentials or network issues).
+      console.log("Authentication error:", e);
+    }
   };
 
   return <SignInForm onSubmit={onSubmit} />;

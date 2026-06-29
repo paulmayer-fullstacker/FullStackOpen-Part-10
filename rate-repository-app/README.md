@@ -102,7 +102,7 @@ Problem encountered due to my import of useQuery into useRepositories. Remember:
 
 ### Exercise 12
 
-Environmental variabled defined within .env file. Thus:
+Environmental variables defined within .env file. Thus:
 
 ```text
 # .env:
@@ -111,6 +111,36 @@ EXPO_PUBLIC_ENV=test
 # EXPO_PUBLIC_APOLLO_URI=http://<Expo IP address>:4000/graphql. Note: Quotation marks not required.
 # Replace <Expo IP address> with IP address from Metro: exp://192.168.1.149:8081 (below QR code), i.e.: 192.168.1.149.
 EXPO_PUBLIC_APOLLO_URI=http://192.168.1.149:4000/graphql
+```
+
+### Exercise 13
+
+At this point we handle authentication as a one-time request/response transaction. We will simply log the authentication payload data (inc. JSON Web Token). The token is not retained to maintain an authenticated session, for subsequent requests.
+
+To test: use this mutation in the SandBox to create a user with an appropriate password.
+
+```text
+mutation {
+  createUser(user: { username: "myusername", password: "Pass(w0rd)" }) {
+    id
+    username
+  }
+}
+```
+
+Note: In my current app implementation, a valid password must contain at least 8 characters, have at least one lower case, one upper case, one number, and one special character
+
+Then, logging in to the app wth the credentials:
+
+```text
+   username: myusername
+   password: Pass(w0rd)
+```
+
+Should log:
+
+```text
+myusername authenticated, with payload data {"authenticate": {"\_\_typename": "AuthenticatePayload", "accessToken": "<Long psudo-random character string. This is the JSON Web Tokens, Header, Payload, and Signature>"}}
 ```
 
 ## END
