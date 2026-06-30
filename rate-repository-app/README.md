@@ -143,6 +143,10 @@ Should log:
 myusername authenticated, with payload data {"authenticate": {"\_\_typename": "AuthenticatePayload", "accessToken": "<Long psudo-random character string. This is the JSON Web Tokens, Header, Payload, and Signature>"}}
 ```
 
+### Exercise 14
+
+The three methods for the AuthStorage class have been created. However, I can think of no easy way to test functionality. So, Exercise-14 has been commited untested. Pending further architecture to employ the utility class.
+
 ## END
 
 ---
