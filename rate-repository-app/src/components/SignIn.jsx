@@ -3,6 +3,7 @@
 
 import { StyleSheet, TextInput, Pressable, View } from "react-native"; // Import UI and layout from React Native.
 import { useFormik } from "formik"; // Import the core React hook from Formik to manage input state.
+import { useNavigate } from "react-router-native"; // Import useNavigate.
 import * as yup from "yup"; // Import all exports from Yup as an object to declare schema-based runtime validation
 import Text from "./Text"; // Using our custom Text component for consistent typography.
 import theme from "../theme"; // Importing our centralised theme.
@@ -139,16 +140,23 @@ const SignInForm = ({ onSubmit }) => {
 const SignIn = () => {
   // Initialize our custom hook. Destructure the signIn trigger function from the hook's returned tuple [signIn, result].
   const [signIn] = useSignIn();
+  // Initialize the navigation hook.
+  const naviGate = useNavigate();
   // onSubmit now asynchronous, to handle the network request promise sent by our useSignIn custom hook.
   const onSubmit = async (values) => {
     const { username, password } = values;
     try {
       // Execute the custom hook's signIn function, passing in username/password credentials form values.
       const { data } = await signIn({ username, password }); // Destructure 'data' out of the returned network payload.
-      // Log the resultant 'data' to confirm valid access token.
-      // console.log(data); // Improved o/p
-      // The token arrives in 'data.authenticate.accessToken'. However, it is only logged (not saved), at this point.
-      console.log(username, "authenticated, with payload data:", data);
+      // Alternative to Logical AND (&&) short-circuiting: // if (payload && payload.data && payload.data.authenticate) {
+      // ?. operator reads the nested property directly. If payload, data, or authenticate are null or undefined, evaluation stops, and the if block is safely skipped.
+      if (data?.authenticate?.accessToken) {
+        // if the accesstoken package is correctly formatted:
+        // console.log(data); // Log the resultant 'data' to confirm valid access token. // Improved o/p:
+        console.log(username, "authenticated, with payload data:", data);
+        // Redirect to the repository list view (typically the home root "/" route)
+        naviGate("/");
+      }
       // else: catch the error.
     } catch (e) {
       // Display any errors thrown during mutation execution (e.g., bad credentials or network issues).

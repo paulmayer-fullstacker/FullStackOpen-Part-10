@@ -147,6 +147,17 @@ myusername authenticated, with payload data {"authenticate": {"\_\_typename": "A
 
 The three methods for the AuthStorage class have been created. However, I can think of no easy way to test functionality. So, Exercise-14 has been commited untested. Pending further architecture to employ the utility class.
 
+### Exercise 15
+
+Test using the credentials created to test exercise 13.
+
+```text
+   username: myusername
+   password: Pass(w0rd)
+```
+
+The JSON Web Token is still printed to the console. However, the token is now stored localy and the user is redirected to the reviewed repositories list.
+
 ## END
 
 ---

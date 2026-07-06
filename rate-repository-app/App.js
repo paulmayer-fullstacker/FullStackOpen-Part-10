@@ -9,10 +9,17 @@ import { StatusBar } from "expo-status-bar";
 import { NativeRouter } from "react-router-native";
 // Import 'Main' component, acting as the core structural container for the app's views.
 import Main from "./src/components/Main";
-// Utility used to create a new Apollo Client.
+// Import utility used to create a new Apollo Client.
 import createApolloClient from "./src/utils/apolloClient";
+// Import storage utility to manage secure/local persistence of authentication tokens.
+import AuthStorage from "./src/utils/authStorage";
+//
+import AuthStorageContext from "./src/contexts/AuthStorageContext";
 
-const apolloClient = createApolloClient();
+// Initialise an instance of the authentication storage handler
+const authStorage = new AuthStorage();
+// Create Apollo Client instance, passing the storage handler to automatically inject tokens into request headers.
+const apolloClient = createApolloClient(authStorage);
 
 const App = () => {
   console.log("env check:", process.env.EXPO_PUBLIC_ENV); // Logs 'env check: test' when the app starts up on the client.
@@ -26,8 +33,11 @@ const App = () => {
       <NativeRouter>
         {/* Provide the client to our React app */}
         <ApolloProvider client={apolloClient}>
-          {/* Renders the 'Main' component, where the actual layout, headers, and specific page routes live. */}
-          <Main />
+          {/* Wrap. Now, any nested components or custom hooks (useSignIn) can access authStorage using useContext(AuthStorageContext) */}
+          <AuthStorageContext.Provider value={authStorage}>
+            {/* Renders the 'Main' component, where the actual layout, headers, and specific page routes live. */}
+            <Main />
+          </AuthStorageContext.Provider>
         </ApolloProvider>
       </NativeRouter>
     </>
