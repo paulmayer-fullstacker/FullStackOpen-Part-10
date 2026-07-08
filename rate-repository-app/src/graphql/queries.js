@@ -22,23 +22,11 @@ export const GET_REPOSITORIES = gql`
   }
 `; // The GraphQL query must be enclosed in backticks
 
-/*
-  Query: tested in Sandbox:
-  query GetRepositories {
-  repositories {
-    edges {
-      node {
-        id
-        ownerAvatarUrl
-        fullName
-        description
-        language
-        stargazersCount
-        forksCount
-        reviewCount
-        ratingAverage
-      }
+export const GET_CURRENTUSER = gql`
+  query getCurrentUser {
+    me {
+      id
+      username
     }
   }
-}
-  */
+`;

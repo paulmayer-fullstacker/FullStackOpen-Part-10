@@ -158,6 +158,83 @@ Test using the credentials created to test exercise 13.
 
 The JSON Web Token is still printed to the console. However, the token is now stored localy and the user is redirected to the reviewed repositories list.
 
+### Exercise 16
+
+In the Apollo Sandbox, use this mutation to retrieve an access token for a authorised user:
+
+Operation
+
+```text
+mutation RetrievToken($credentials: AuthenticateInput!) {
+  authenticate(credentials: $credentials) {
+    accessToken
+  }
+}
+```
+
+Variables
+
+```text
+{
+  "credentials": {
+    "username": "myusername",
+    "password": "Pass(w0rd)"
+  }
+}
+```
+
+We can then confirm the validity of the access token, by using it to identify its owner (the current user):
+
+Operation
+
+```text
+query GetCurrentUser {
+  me {
+    id
+    username
+  }
+}
+```
+
+Headers
+
+```text
+Authorization Bearer <Access token, with no quotation marks>
+```
+
+Having completed exercise 16, logging code added to fully test the SignOut() function:
+```text
+const signOut = async () => {
+    // Because JavaScript is single-threaded and handles asynchronous operations via an event loop, it will not move on to 
+    // apolloClient.resetStore() until the promise returned by authStorage.removeAccessToken() has successfully resolved.
+    // However, just in case the device storage fails to clear, we use a try/catch:
+    try{
+      // First: Remove the token from storage.
+      console.log('Initiating sign out. Removing token.');
+      await authStorage.removeAccessToken();
+    
+      // Then: Reset the store to clear the cache and re-execute active queries (i.e., the 'me' query).
+      console.log('Token removed. Resetting Apollo store.');
+      await apolloClient.resetStore();
+      // At this point extract the state of the Apollo cache, and test for null (empty).
+      const apolloCacheContents = apolloClient.cache.extract();
+      if (apolloCacheContents?.ROOT_QUERY?.me) {
+        console.log('Cache still contains user data:', apolloCacheContents);
+      }
+      else {
+        // Message to reflect success
+        console.log('The Apollo store is reset (User === null)!');
+      }
+    }
+    catch (error) {
+      console.error("Sign out sequence failed:", error);
+    }
+  };
+
+  return signOut;
+```
+
+
 ## END
 
 ---
