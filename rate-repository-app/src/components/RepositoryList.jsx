@@ -15,15 +15,14 @@ const styles = StyleSheet.create({
 // Helper component used to render a spacer between each list item row.
 const ItemSeparator = () => <View style={styles.separator} />;
 
-const RepositoryList = () => {
-  // Refactored code: Replaced local useState, useEffect, and fetchRepositories with the /src/hooks/useRepositories.js custom hook.
-  // Extract the 'repositories' data state directly from useRepositories.js.
-  const { repositories } = useRepositories();
-
+// RepositoryListContainer: Presentational component that does not fetch its own data, it receives 'repositories' as a prop.
+// Simplyfying testing, as we do not need to mock Apollo Client or hook side-effects.
+// Use named export 'export const RepositoryListContainer' so the test file can import it explicitly (import { RepositoryListContainer })
+export const RepositoryListContainer = ({ repositories }) => {
   // Get the nodes from the edges array. If 'repositories' is still undefined (when fetching), default safely to an empty array.
   const repositoryNodes =
-    // Ternary operator: If 'repositories' is true (exists), .mao() through its 'edges' array, extracting the inner
-    //  "node" object (which contains the actual repository data) from each "edge" object. Creating a flat array.
+    // Ternary operator: If 'repositories' is true (exists), .map() through its 'edges' array, extracting the inner
+    //  "node" object (which contains the repository data) from each "edge" object. Creating a flat array.
     repositories
       ? repositories.edges.map((edge) => edge.node)
       : // If 'repositories' is false (still loading or undefined [null]), default to an empty array[].
@@ -42,6 +41,15 @@ const RepositoryList = () => {
       renderItem={({ item }) => <RepositoryItem item={item} />}
     />
   );
+};
+
+// The RepositoryList component now only handles the side effect (fetching data via the hook), delegating rendering to RepositoryListContainer.
+const RepositoryList = () => {
+  // Extract the 'repositories' data state directly from useRepositories.js.
+  const { repositories } = useRepositories();
+
+  // Render the presentation container, passing down the fetched repositories state.
+  return <RepositoryListContainer repositories={repositories} />;
 };
 
 export default RepositoryList;
