@@ -16,7 +16,7 @@ import useSignOut from "../hooks/useSignOut"; // Import our useSignOut custom ho
 const styles = StyleSheet.create({
   container: {
     paddingTop: Constants.statusBarHeight, // Prevents the content from being hidden under the phone's status bar or the status bar being hidden by content.
-    backgroundColor: theme.colors.appBarBackground, // Set the background color based on your theme.
+    backgroundColor: theme.colors.appBarBackground, // Set the background color based on our theme.
     display: "flex" // Redundant. Views use flexbox layout by default in React Native.
     //flexDirection: "row" // Removed. Child is now a single ScroolView, that fills the parent container. row styling now managed by the ScrollView container.
   },

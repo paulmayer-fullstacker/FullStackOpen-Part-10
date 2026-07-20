@@ -3,7 +3,7 @@
 // import { useApolloClient } from "@apollo/client";
 // import { useMutation } from "@apollo/client/react"; // Import useMutation hook from Apollo Client React, to handle GraphQL data fetching and lifecycle states.
 import { useMutation, useApolloClient } from "@apollo/client/react";
-import { SIGN_IN } from "../graphql/mutations"; // Adjust this path based on where your mutations are stored.
+import { SIGN_IN } from "../graphql/mutations"; // Import SignIn mutation.
 import useAuthStorage from "../hooks/useAuthStorage"; // Import the custom hook
 
 const useSignIn = () => {

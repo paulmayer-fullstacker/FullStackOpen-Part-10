@@ -1,170 +1,59 @@
 // src/components/SignIn.jsx:
-// Validated user interface employing Formik for state management and form handling, and Yup for validation.
+// Smart/container component responsible for authenticating the user.
+//
+// This component contains no user interface code. It just handles the business logic by:
+// - invoking the custom useSignIn hook to authenticate the user, - navigating to the home page after successful authentication,
+// - and passing the onSubmit handler to the pure SignInContainer component
 
-import { StyleSheet, TextInput, Pressable, View } from "react-native"; // Import UI and layout from React Native.
-import { useFormik } from "formik"; // Import the core React hook from Formik to manage input state.
-import { useNavigate } from "react-router-native"; // Import useNavigate.
-import * as yup from "yup"; // Import all exports from Yup as an object to declare schema-based runtime validation
-import Text from "./Text"; // Using our custom Text component for consistent typography.
-import theme from "../theme"; // Importing our centralised theme.
+import { useNavigate } from "react-router-native"; // Import React Router navigation hook.
 
-import useSignIn from "../hooks/useSignIn"; // Import our custom sign-in hook to connect to the GraphQL backend.
+import useSignIn from "../hooks/useSignIn"; // Import the custom authentication hook.
 
-// Define the layout and component styling:
-const styles = StyleSheet.create({
-  container: {
-    backgroundColor: "white", // White background container for the form.
-    padding: 15 // Inner spacing around the form elements.
-  },
-  input: {
-    borderWidth: 1, // Narrow line border round input box.
-    borderColor: "#a9a9a9", // Grey border colour.
-    borderRadius: 10, // Rounded corners.
-    padding: 15, // Padding inside the box for text.
-    // marginBottom: 15, // Space between inputs and Submit button. Removed to accommodate error message.
-    fontFamily: theme.fonts.platformSpecificFontFormat, // Added so text typed inside the form matches the global theme.
-    fontSize: theme.fontSizes.subheading // Adhear to global theme.
-  },
-  inputError: {
-    borderColor: "red" // Red border colour for validation failure.
-  },
-  inputMarginBottom: {
-    marginBottom: 15 // Removable margin, in case error message needs to be displayed.
-  },
-  errorMessageText: {
-    color: "red",
-    marginTop: 5,
-    marginBottom: 15 // Space between error message and Submit button.
-  },
-  button: {
-    backgroundColor: "#0366d6", // Blue background button colour.
-    borderRadius: 10, // Rounded corners.
-    alignItems: "center", // Centrally align the text inside the button.
-    padding: 15 // Vertical and horizontal padding round the text.
-  },
-  buttonText: {
-    color: "white", // White text colour - contrast.
-    fontWeight: theme.fontWeights.bold, // Bold text weight.
-    fontSize: theme.fontSizes.subheading
-  }
-});
+// SignInContainer manages only the Formik form and user interface, having no interaction with authentication or navigation.
+import SignInContainer from "./SignInContainer"; // Import the pure presentational component.
 
-// Define the validation schema using Yup
-const validationSchema = yup.object().shape({
-  username: yup
-    .string() // Evaluate variable data type to ensure string.
-    .min(3, "Username must be at least 3 characters long")
-    .required("Username is required"), // Invalid if property evaluates to false.
-  password: yup
-    .string()
-    .min(8, "Password must be at least 8 characters long")
-    .matches(/[A-Z]/, "Password must contain at least one uppercase letter") // .matches: scans the sequence for inclusion (A-Z).
-    .matches(/[a-z]/, "Password must contain at least one lowercase letter")
-    .matches(/[0-9]/, "Password must contain at least one number")
-    .matches(
-      /[@$!()£%*?&]/,
-      "Password must contain at least one special character (@$!£%*?&)"
-    )
-    .required("Password is required")
-});
-
-// Define the initial state structure for Formik
-const initialValues = {
-  username: "", // Instantiate the initial variable string as empty.
-  password: ""
-};
-
-// Presentational component holding the form elements
-const SignInForm = ({ onSubmit }) => {
-  // Invoke Formik hook.
-  const formik = useFormik({
-    initialValues,
-    validationSchema, // Integrate the validation schema.
-    onSubmit
-  });
-
-  return (
-    <View style={styles.container}>
-      {/* Username Input Field */}
-      <TextInput
-        style={[
-          styles.input,
-          // Dynamically track validation and interface interaction. Conditional styling on validation error.
-          formik.touched.username && formik.errors.username
-            ? styles.inputError
-            : styles.inputMarginBottom
-        ]}
-        placeholder="Username"
-        placeholderTextColor="#767676"
-        value={formik.values.username}
-        onChangeText={formik.handleChange("username")}
-        autoCapitalize="none" // Submit username as typed. No auto-cap first letter of names.
-        onBlur={formik.handleBlur("username")} // Trigger Formik's 'touched' state. Alerts the hook to log user exited the field, making error notifications eligible for display.
-      />
-      {/* Evaluate state values. Print the current failure message when field has been touched and validation parameters fail. */}
-      {formik.touched.username && formik.errors.username && (
-        <Text style={styles.errorMessageText}>{formik.errors.username}</Text>
-      )}
-
-      {/* Password Input Field */}
-      <TextInput
-        style={[
-          styles.input,
-          // Conditional styling on validation error.
-          formik.touched.password && formik.errors.password
-            ? styles.inputError
-            : styles.inputMarginBottom
-        ]}
-        placeholder="Password"
-        placeholderTextColor="#767676"
-        value={formik.values.password}
-        onChangeText={formik.handleChange("password")}
-        secureTextEntry // Obscures the text entry for security. secureTextEntry={true}
-        autoCapitalize="none" // Submit password as typed by user.
-        onBlur={formik.handleBlur("password")} // Trigger Formik's 'touched' state.
-      />
-      {/* Evaluate state values. Render the current failure message when when field has been touched and validation fails. */}
-      {formik.touched.password && formik.errors.password && (
-        <Text style={styles.errorMessageText}>{formik.errors.password}</Text>
-      )}
-
-      {/* Submit Button wrapper */}
-      <Pressable style={styles.button} onPress={formik.handleSubmit}>
-        <Text style={styles.buttonText}>Sign in</Text>
-      </Pressable>
-    </View>
-  );
-};
-
-// Main container component, handling business logic.
+// Main smart/container component.
 const SignIn = () => {
-  // Initialize our custom hook. Destructure the signIn trigger function from the hook's returned tuple [signIn, result].
+  // Initialise our custom authentication hook, which returns a tuple [signIn, result]
+  // Here just use the signIn function.
   const [signIn] = useSignIn();
-  // Initialize the navigation hook.
-  const naviGate = useNavigate();
-  // onSubmit now asynchronous, to handle the network request promise sent by our useSignIn custom hook.
+
+  // Initialise the React Router navigation hook.
+  const navigate = useNavigate();
+
+  // Form submission handler. Asynchronous function receives the validated form values from SignInContainer,
+  // authenticates the user via Apollo Client and, redirects the user to the repository list (if authentication successful).
   const onSubmit = async (values) => {
+    // Destructure the submitted credentials.
     const { username, password } = values;
+
     try {
-      // Execute the custom hook's signIn function, passing in username/password credentials form values.
-      const { data } = await signIn({ username, password }); // Destructure 'data' out of the returned network payload.
-      // Alternative to Logical AND (&&) short-circuiting: // if (payload && payload.data && payload.data.authenticate) {
-      // ?. operator reads the nested property directly. If payload, data, or authenticate are null or undefined, evaluation stops, and the if block is safely skipped.
+      // Execute the authentication mutation. The custom useSignIn hook returns the entire
+      //  Apollo mutation payload, allowing us to check the authentication response.
+      const { data } = await signIn({
+        username,
+        password
+      });
+
+      // Confirm that a valid access token has been returned before attempting navigation.
       if (data?.authenticate?.accessToken) {
-        // if the accesstoken package is correctly formatted:
-        // console.log(data); // Log the resultant 'data' to confirm valid access token. // Improved o/p:
         console.log(username, "authenticated, with payload data:", data);
-        // Redirect to the repository list view (typically the home root "/" route)
-        naviGate("/");
+
+        // Redirect the authenticated user to the application's home page.
+        navigate("/");
       }
-      // else: catch the error.
+
+      // Otherwise, execution continues to the catch block below.
     } catch (e) {
-      // Display any errors thrown during mutation execution (e.g., bad credentials or network issues).
+      // Log any authentication or network errors.
       console.log("Authentication error:", e);
     }
   };
 
-  return <SignInForm onSubmit={onSubmit} />;
+  // Render SignInContainer (the presentational component), supplying the authentication handler as a prop.
+  // SignInContainer is responsible only for collecting and validating the user's credentials before invoking this callback.
+  return <SignInContainer onSubmit={onSubmit} />;
 };
-// Export the SignIn component so that it can be dynamically rendered by the Router inside Main.jsx.
+
+// Export the SignIn component so that it can be rendered by the app's router.
 export default SignIn;

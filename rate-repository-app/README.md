@@ -177,7 +177,7 @@ Variables
 ```text
 {
   "credentials": {
-    "username": "myusername",
+    "username"myusername",
     "password": "Pass(w0rd)"
   }
 }
@@ -237,8 +237,6 @@ const signOut = async () => {
 
 ## Chapter 5
 
-### Exercise 17
-
 Installed jest-expo and appended package.json with a new "jest" configuration key.
 
 I tried adding a comment to the package.json file, in the form of a dummy key. However, I'm not convinced that will work too well. So, it's been removed.
@@ -249,13 +247,44 @@ To execute the test suites in the `/src/_tests_` directory, run `npm test`.
 
 #### Versioning Issues
 
-While working through the course material and trialling the example tests, I encountered a versioning issue. I have installed a newer versions of the React Native testing ecosystem. One that is incompatible with the example tests, as offered in the course material. Rather than retrograde my testing ecosystem (and risk employing deprecated code), I decided to update the tests. Thus, concentrating on the latest test strategies.
+While working through the course material and trialling the example tests, I encountered a versioning issue. I have installed newer versions of the React Native testing ecosystem. One that is incompatible with the example tests, as offered in the course material. Rather than downgrading my testing ecosystem (and risk employing deprecated code), I decided to update the tests. Thus, concentrating on the latest test strategies, per React Native Testing Library (RNTL) v14.
 
 It is my understanding that, in React 19, `react-test-renderer` has been deprecated and removed as a dependency in `@testing-library/react-native` version 14+, in favour of a new package called `test-renderer`. The new testing library (v14), introduces changes to the rendering and interaction APIs. The `render()` function is now asynchronous, so tests use: `await render(<Greeting name="Kalle" />)`, rather than `render(<Greeting name="Kalle" />)`.
 
 ### Exercise 17
 
 Test suit implemented using React Native Testing Library v14. The `render()` function is now asynchronous. So, `await render()` guarantees the component resolves all internal cycles and renders to the virtual screen before the test runner starts casting assertions.
+
+### Exercise 18
+
+I refactored SignIn.jsx to extract the presentational form wrapper into a component called SignInContainer. Exporting SignInContainer so that the test runner (SignInForm.test.jsx) could isolate it from the live Apollo Client hooks and navigation code.
+
+However, SignInForm.test.jsx kept generating this error:
+
+`SyntaxError: Cannot use import statement outside a module`
+
+`import { useNavigate } from "react-router-native"; // Import useNavigate.`
+
+SignInContainer doesn't need or use `useNavigate`. However, Jest still tries to load it.
+
+Solution:
+Refactor to completely different modules:
+
+```text
+src/_tests_/SignInContainer.test.jsx
+src/components/SignInContainer.jsx
+src/components/SignIn.jsx
+```
+
+Having debugged the code and squeezed a pass out of the test, I still get errors reported:
+
+` console.error`
+
+`The current testing environment is not configured to support act(...)`
+
+I believe that this is due to a versioning conflict between React 19, Formik, and the RNTL v14. I'm pretty sure that it's not just down to my code.
+In attempts to resolve the conflicts, I implemented waits employing `act()` rather than `waitFor()`. See the `ACT-SignInContainerTest.test.jsx` test file.
+Although this solution was shorter (coding) and a little faster to execute, I prefer the `SignInContainer.test.jsx` solution.
 
 ## END
 
