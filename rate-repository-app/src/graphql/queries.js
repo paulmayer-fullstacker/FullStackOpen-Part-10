@@ -31,7 +31,7 @@ export const GET_CURRENTUSER = gql`
     }
   }
 `;
-// Query to fetch details for a single repository by Id
+// Query to fetch details for a single repository by Id.
 export const GET_ONE_REPOSITORY = gql`
   query GetRepository($id: ID!) {
     repository(id: $id) {
@@ -45,6 +45,61 @@ export const GET_ONE_REPOSITORY = gql`
       reviewCount
       ratingAverage
       url # //  Launch GitHub URL via Linking API
+    }
+  }
+`;
+
+// Query to fetch reviews for the single repository.
+export const GET_REPO_REVIEWS = gql`
+  query GetReviews($id: ID!) {
+    repository(id: $id) {
+      id
+      fullName
+      reviews {
+        edges {
+          node {
+            id
+            text
+            rating
+            createdAt
+            user {
+              id
+              username
+            }
+          }
+        }
+      }
+    }
+  }
+`;
+// Query to fetch details for a single repository (inc. reviews), by Id.
+export const GET_REPO_AND_REVIEWS = gql`
+  query GetRepository($id: ID!) {
+    repository(id: $id) {
+      id
+      ownerAvatarUrl
+      fullName
+      description
+      language
+      stargazersCount
+      forksCount
+      reviewCount
+      ratingAverage
+      url
+      reviews {
+        edges {
+          node {
+            id
+            text
+            rating
+            createdAt
+            user {
+              id
+              username
+            }
+          }
+        }
+      }
     }
   }
 `;

@@ -1,20 +1,11 @@
 // /src/components/RepositoryList.jsx
 // Manages the data array fetched from the server and configures the FlatList to iterate over the repositories.
 
-import { FlatList, View, StyleSheet, Pressable } from "react-native";
+import { FlatList, Pressable } from "react-native";
 import { useNavigate } from "react-router-native"; // Import useNavigate hook to switch routes programmatically.
 import RepositoryItem from "./RepositoryItem"; // Import our item component so that each individual item can be rendered in the list.
+import ItemSeparator from "./ItemSeparator"; // Shared component import
 import useRepositories from "../hooks/useRepositories"; // Import useRepositories custom hook
-
-const styles = StyleSheet.create({
-  // Define a visual gap between list items.
-  separator: {
-    height: 10
-  }
-});
-
-// Helper component used to render a spacer between each list item row.
-const ItemSeparator = () => <View style={styles.separator} />;
 
 // RepositoryListContainer: Presentational component that does not fetch its own data, it receives 'repositories' as a prop.
 // Simplyfying testing, as we do not need to mock Apollo Client or hook side-effects.

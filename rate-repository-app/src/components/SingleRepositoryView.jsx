@@ -2,16 +2,12 @@
 // View component that retrieves route parameters and renders a single RepositoryItem card using the useRepository hook.
 
 import { useParams } from "react-router-native"; // Extracts path parameters (:id) from the current route.
-import { Text, View, StyleSheet } from "react-native";
+import { Text, FlatList } from "react-native";
 
 import RepositoryItem from "./RepositoryItem"; // Presentational item card component.
+import ReviewItem from "./ReviewItem"; // Presentational review card component.
+import ItemSeparator from "./ItemSeparator"; // Shared component import.
 import useRepository from "../hooks/useRepository"; // Custom hook to fetch single repository data.
-
-const styles = StyleSheet.create({
-  container: {
-    flex: 1
-  }
-});
 
 const SingleRepositoryView = () => {
   // Read the repository 'id' parameter from the URL path (e.g., /repository/jaredpalmer.formik)
@@ -31,11 +27,30 @@ const SingleRepositoryView = () => {
     return <Text>Error: {error.message}</Text>;
   }
   // else, render the repository and the renderopenInGitHubBtn.
+  // Extract review nodes array from the edges structure, defaulting to an empty array if undefined
+  const reviews = repository?.reviews
+    ? repository.reviews.edges.map((edge) => edge.node)
+    : // If 'reviews' is false (still loading or undefined [null]), default to an empty array[].
+      [];
   return (
-    <View style={styles.container}>
-      {/* Pass renderopenInGitHubBtn={true} so RepositoryItem renders the GitHub pressable button */}
-      <RepositoryItem item={repository} renderopenInGitHubBtn={true} />
-    </View>
+    <FlatList
+      // Array of review node objects
+      data={reviews}
+      // Unique key for each review item
+      keyExtractor={({ id }) => id}
+      // Renders the main repository card at the top of the scroll view
+      ListHeaderComponent={() => (
+        <>
+          {/* Pass renderopenInGitHubBtn={true} so RepositoryItem renders the GitHub pressable button */}
+          <RepositoryItem item={repository} renderopenInGitHubBtn={true} />
+          <ItemSeparator />
+        </>
+      )}
+      // Render individual review card
+      renderItem={({ item }) => <ReviewItem review={item} />}
+      // Adds spacing between review items
+      ItemSeparatorComponent={ItemSeparator}
+    />
   );
 };
 
