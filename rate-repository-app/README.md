@@ -286,6 +286,10 @@ I believe that this is due to a versioning conflict between React 19, Formik, an
 In attempts to resolve the conflicts, I implemented waits employing `act()` rather than `waitFor()`. See the `ACT-SignInContainerTest.test.jsx` test file.
 Although this solution was shorter (coding) and a little faster to execute, I prefer the `SignInContainer.test.jsx` solution.
 
+### Exercise 19
+
+Created a new query to fetch a single repository. Created a useRepository custom hook, to fetch the single repository data, based on item Id. Then, created a SingleRepositoryView component to render the single repository view. Updated RepositoryItem, RepositoryList and Main components, to accommodate new functionality (i.e.: selecting item from list and linking 'Open in GitHub' button).
+
 ## END
 
 ---

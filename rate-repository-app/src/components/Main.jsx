@@ -3,7 +3,8 @@
 
 import { StyleSheet, View } from "react-native"; // Import core layout components and styling utilities from React Native.
 import { Route, Routes, Navigate } from "react-router-native"; // Import routing components for navigating within the mobile app.
-import RepositoryList from "./RepositoryList"; // Import the list of items
+import RepositoryList from "./RepositoryList"; // Import the list of items.
+import SingleRepositoryView from "./SingleRepositoryView"; // Import the SingleRepositoryView component.
 import SignIn from "./SignIn"; // Import the component for the SignIn screen.
 import AppBar from "./AppBar"; // Import the top navigation bar component.
 import theme from "../theme"; // Import the centralized theme configuration for consistent styling.
@@ -29,6 +30,8 @@ const Main = () => {
         <Route path="/" element={<RepositoryList />} />
         {/* Sign-in page route: When the path matches "/signin", render the SignIn component. */}
         <Route path="/signin" element={<SignIn />} />
+        {/* Single repository route using path parameter ':id' to capture repository Ids dynamically */}
+        <Route path="/repository/:id" element={<SingleRepositoryView />} />
         {/* Catch-all / fallback route: Matches any URL path ("*") not caught by the ones above. */}
         {/* Instead of rendering a "404 Not Found" page, the <Navigate to="/" /> component redirects back to the home page (/). */}
         {/* The 'replace' prop replaces the brocken link in the history stack, with the home page. So, it can't be called by the [Back] button. */}
