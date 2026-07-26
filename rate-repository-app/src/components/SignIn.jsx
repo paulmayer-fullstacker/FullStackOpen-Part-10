@@ -1,5 +1,5 @@
 // src/components/SignIn.jsx:
-// Smart/container component responsible for authenticating the user.
+// Component responsible for authenticating the user.
 //
 // This component contains no user interface code. It just handles the business logic by:
 // - invoking the custom useSignIn hook to authenticate the user, - navigating to the home page after successful authentication,

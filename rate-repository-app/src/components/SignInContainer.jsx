@@ -135,7 +135,7 @@ const SignInContainer = ({ onSubmit }) => {
 
       {/* Submit Button wrapper */}
       <Pressable
-        testID="submitButton" // *** NEW *** Allows the Pressable itself to be targeted by the unit test.
+        testID="submitButton" // Allows the Pressable itself to be targeted by the unit test.
         style={styles.button}
         onPress={formik.handleSubmit}
       >

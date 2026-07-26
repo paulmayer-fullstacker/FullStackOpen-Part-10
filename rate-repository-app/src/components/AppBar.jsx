@@ -1,6 +1,7 @@
 // /src/components/AppBar.jsx:
 //  Defining the top-level nav bar for the app. Utilising a custom styling theme and a reusable sub-component (AppBarTab),
 //  to create a consistent header that responds to user touch and manages device status bar spacing for mobile devices.
+// Updatedto offer a 'Create Review' tab, ifthe user is successfully signed in.
 
 import { View, StyleSheet, ScrollView, Pressable } from "react-native"; // Pull core functions blocks from React Native.
 import { Link } from "react-router-native"; // Import Link from react-router-native, to manage routing transitions.
@@ -42,7 +43,7 @@ const AppBarTab = ({ title, to, onPress }) => {
     <Text fontWeight="bold" fontSize="subheading" style={styles.tabText}>
       {title}
     </Text>
-  )
+  );
   // If an onPress function is provided, we render a primitive Pressable component instead of a router Link.
   // We reuse the exact same `styles.tabTouchable` object here so the hit-target layout matches the Links.
   if (onPress) {
@@ -81,15 +82,18 @@ const AppBar = () => {
         horizontal
         contentContainerStyle={styles.scrollViewContentContainer}
       >
-        {/* AppBarTab: Instance of our sub-component. We currently have two tabs: "Repositories" and "Sign In." */}
+        {/* AppBarTab: Instance of our sub-component. We currently have three tabs: "Repositories", "Sign In/Out and Creat review." */}
         {/* Pass the "to" prop (<Link> to) to point to the correct paths configured in Main.jsx */}
         <AppBarTab title="Repositories" to="/" />
         {/* Conditional rendering based on sign-in status */}
         {user ? (
-          // if user not null, user is signed in. So, offer 'Sign Out'.
-          <AppBarTab title="Sign out" onPress={signOut} />
-          // onPress={signOut} forces our conditional logic in AppBarTab to switch from an inactive routing link 
-          // to an active <Pressable> node that fires the actual state-clearing sequence.
+          <>
+            {/* // if user not null, user is signed in. So, offer 'Create Review' and 'Sign Out'. */}
+            <AppBarTab title="Create a review" to="/create-review" />
+            <AppBarTab title="Sign out" onPress={signOut} />
+            {/* onPress={signOut} forces our conditional logic in AppBarTab to switch from an inactive routing link 
+               to an active <Pressable> node that fires the actual state-clearing sequence. */}
+          </>
         ) : (
           // else offer 'Sign In'
           <AppBarTab title="Sign in" to="/signin" />

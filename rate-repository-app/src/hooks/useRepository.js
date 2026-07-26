@@ -8,6 +8,10 @@ import { GET_REPO_AND_REVIEWS } from "../graphql/queries"; // Import query fetch
 const useRepository = (id) => {
   // Execute query with Apollo's useQuery hook, passing 'id' inside the variables option.
   const { data, error, loading, refetch } = useQuery(GET_REPO_AND_REVIEWS, {
+    /*Note on cache-and-network
+    We pass { fetchPolicy: 'cache-and-network' } inside the options object of useQuery.
+     - 'cache': Serves cached data instantly so the screen opens without delay.
+     - 'network': Sends a background HTTP request to Apollo Server to fetch the latest reviews (inc. newly created review) and updates the UI automatically. */
     fetchPolicy: "cache-and-network", // Serves cached data instantly while refetching latest data in background.
     variables: { id }
   });

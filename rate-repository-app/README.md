@@ -290,6 +290,44 @@ Although this solution was shorter (coding) and a little faster to execute, I pr
 
 Created a new query to fetch a single repository. Created a useRepository custom hook, to fetch the single repository data, based on item Id. Then, created a SingleRepositoryView component to render the single repository view. Updated RepositoryItem, RepositoryList and Main components, to accommodate new functionality (i.e.: selecting item from list and linking 'Open in GitHub' button).
 
+### Exercise 20
+
+Created a new query to fetch a single repository including reviews. Created ReviewItem presentational component to render a single repository review card. Created an ItemSeparator component, as a shared resource, used in RepositoryList and SingleRepositoryView components, to separate the FlatList items (repository cards and review cards).
+
+#### Note on: `<Flatlist/>`
+
+React Native’s <FlatList> is a wrapper around a more low-level component called <VirtualizedList>.
+
+Instead of rendering all 30, 300 or 3000 reviews in our list, all at once (which would consume too much memory), <FlatList> uses a windowing mechanism to structure the layout of the list items:
+
+```text
+[ ListHeaderComponent ]  --> Rendered ONCE at the top
+───────────────────────
+[ Rendered Window ]
+  ├─ Item 1 (renderItem)
+  ├─ Separator (ItemSeparatorComponent)
+  ├─ Item 2 (renderItem)
+  └─ Separator (ItemSeparatorComponent)
+───────────────────────
+[ Unrendered Off-screen Items ] --> Only kept as data in memory
+```
+
+Key Internal Components like Header / Footer Layer (ListHeaderComponent / ListFooterComponent), are placed at the boundaries of the scroll container. These can be used for placing content or repo details that scroll along with the list.
+
+React Native automatically injects the Separator (ItemSeparatorComponent) components between items in your data array. Excluding before the first item or after the last item.
+
+The Key Tracker (keyExtractor)is evaluated for every node in data to assign React's internal key prop, letting React track which items changed, moved, or deleted during re-renders.
+
+### Exercise 21
+
+While exercise 21 has been completed, per the course instructions, I'm not happy with the way that `CreateReview` works. Inputting the `ownerName` and the `repositoryName`, manually, is error prone. As I discovered while testing.
+
+Also, there is significant code duplication in the `CreateReviewContainer` and `SignInContainer` files. As the application's functionality is developed, this duplication is likely to grow.
+
+To reduce code duplication, it is my understanding that I could implement a custom form (a UI presentational component with Formik hook integration), to act as an abstraction layer between React Native’s primitive <TextInput/> and Formik’s form state context. Such a component would enforce styling uniformity, and enhance code maintainability.
+
+If these issues are not addressed later in the module, I may have to revisit the exercise to clean it up.
+
 ## END
 
 ---
