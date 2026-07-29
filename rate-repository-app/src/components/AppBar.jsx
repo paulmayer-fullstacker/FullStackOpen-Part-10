@@ -1,7 +1,7 @@
 // /src/components/AppBar.jsx:
 //  Defining the top-level nav bar for the app. Utilising a custom styling theme and a reusable sub-component (AppBarTab),
 //  to create a consistent header that responds to user touch and manages device status bar spacing for mobile devices.
-// Updatedto offer a 'Create Review' tab, ifthe user is successfully signed in.
+// Updatedto offer a 'Create Review' tab, if the user is successfully signed in. Also, offer Sign Up tab, alongside Sign In, if not signed in.
 
 import { View, StyleSheet, ScrollView, Pressable } from "react-native"; // Pull core functions blocks from React Native.
 import { Link } from "react-router-native"; // Import Link from react-router-native, to manage routing transitions.
@@ -95,8 +95,11 @@ const AppBar = () => {
                to an active <Pressable> node that fires the actual state-clearing sequence. */}
           </>
         ) : (
-          // else offer 'Sign In'
-          <AppBarTab title="Sign in" to="/signin" />
+          <>
+            {/* else offer 'Sign In' and 'Sign Up' tabs for unauthenticated users. */}
+            <AppBarTab title="Sign in" to="/signin" />
+            <AppBarTab title="Sign up" to="/signup" />
+          </>
         )}
       </ScrollView>
     </View>

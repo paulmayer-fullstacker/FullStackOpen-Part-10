@@ -1,8 +1,9 @@
 // /src/components/RepositoryItem.jsx:
 // A presentational component responsible for defining how a single repository's data is structured and displayed.
-import { View, Image, StyleSheet, Pressable } from "react-native";
+import { View, Image, StyleSheet } from "react-native"; // Pressable removed as we now use Button component
 import * as Linking from "expo-linking"; // Import Linking API to open URLs in default browser.
 import Text from "./Text"; // Utilizing a custom Text component for consistent typography.
+import Button from "./Button"; // Import reusable Button component for primary action buttons.
 import theme from "../theme";
 
 const styles = StyleSheet.create({
@@ -47,20 +48,20 @@ const styles = StyleSheet.create({
   },
   countItem: {
     alignItems: "center" // Center the count text vertically over the label text.
-  },
-  // Styling for the GitHub action button. If present, this will fill the bottom of the card.
-  openInGitHubBtn: {
-    backgroundColor: theme.colors.primary, // Primary blue theme color.
-    padding: 15,
-    borderRadius: 4,
-    alignItems: "center",
-    marginTop: 15
-  },
-  // White text inside the blue openInGitHubBtn button.
-  openInGitHubBtnText: {
-    color: "white",
-    fontWeight: "bold"
   }
+  // // Styling for the GitHub action button. If present, this will fill the bottom of the card.
+  // openInGitHubBtn: {
+  //   backgroundColor: theme.colors.primary, // Primary blue theme color.
+  //   padding: 15,
+  //   borderRadius: 4,
+  //   alignItems: "center",
+  //   marginTop: 15
+  // },
+  // // White text inside the blue openInGitHubBtn button.
+  // openInGitHubBtnText: {
+  //   color: "white",
+  //   fontWeight: "bold"
+  // } // // Removed: openInGitHubBtn & openInGitHubBtnText styles are now handled by <Button />
 });
 
 // Helper function, formatting the precision of count values, for compact notation.
@@ -145,9 +146,10 @@ const RepositoryItem = ({ item, renderopenInGitHubBtn = false }) => {
       </View>
       {/* Conditional rendering of the GitHub button if renderopenInGitHubBtn boolean flag is true*/}
       {renderopenInGitHubBtn && (
-        <Pressable style={styles.openInGitHubBtn} onPress={handleOpenInGitHub}>
-          <Text style={styles.openInGitHubBtnText}>Open in GitHub</Text>
-        </Pressable>
+        // Replaced <Pressable/> and custom text with reusable <Button />. style={{ ... }}: style override prop. */}
+        <Button onPress={handleOpenInGitHub} style={{ marginTop: 15 }}>
+          Open in GitHub
+        </Button>
       )}
     </View>
   );

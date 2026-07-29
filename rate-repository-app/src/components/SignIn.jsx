@@ -12,7 +12,7 @@ import useSignIn from "../hooks/useSignIn"; // Import the custom authentication 
 // SignInContainer manages only the Formik form and user interface, having no interaction with authentication or navigation.
 import SignInContainer from "./SignInContainer"; // Import the pure presentational component.
 
-// Main smart/container component.
+// Main smart container component.
 const SignIn = () => {
   // Initialise our custom authentication hook, which returns a tuple [signIn, result]
   // Here just use the signIn function.

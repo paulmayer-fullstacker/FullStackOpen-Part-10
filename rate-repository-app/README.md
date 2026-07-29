@@ -328,6 +328,22 @@ To reduce code duplication, it is my understanding that I could implement a cust
 
 If these issues are not addressed later in the module, I may have to revisit the exercise to clean it up.
 
+### Exercise 22
+
+Exercise-22 required implementation of a Sign-Up form. Another form demanding user input, validation, and error responses. A form similar to Sign-In and Create Review, with the potential to generate more code duplication. Thus, I elected to create a reusable component (`FormikTextInputComponent`) that deals with the duplicate user input, validation, and error handling, while controlling code duplication and promoting code readability and maintainability.
+
+A detailed explanation of `FormikTextInputComponent`, including its role within the form lifecycle and its interaction with the dependent files, can be found in **FormikTextInputComponent.md**. This document is probably best read alongside the `rate-repository-app` source code.
+
+All the forms that employ our shiny new `FormikTextInputComponent`, also employ a submit button. To prevent styling duplication across forms and cards, I created a reusable `<Button/>` component.
+
+Beyond centralizing background colors and padding, the component:
+
+- Uses style array composition (`[styles.button, style]`) so caller views can pass inline layout overrides (such as `marginTop`) without altering core button defaults.
+- Uses prop forwarding (`...props`) to seamlessly pass native `<Pressable>` props (like `onPress` and `testID`), ensuring component reusability and test compatibility.
+- Integrates our custom `<Text/>` component to maintain consistent theme typography across the application. See the `/src/components/Button.jsx` component.
+
+Exercise-22 triggered a significant discontinuity shift in my design and coding practices. The techniques (referred to above) adopted for Exercise 22 should probably have been employed from the get-go. However, prior to Exercise-22, I had concentrated on one exercise at a time without regard for the bigger design picture.
+
 ## END
 
 ---
