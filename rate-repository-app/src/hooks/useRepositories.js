@@ -5,10 +5,12 @@ import { useQuery } from "@apollo/client/react"; // Import useQuery hook from Ap
 import { GET_REPOSITORIES } from "../graphql/queries"; // Import GET_REPOSITORIES GraphQL query created with the gql template literal.
 
 // Define a custom React hook (useRepositories), to make repository data reusable across components.
-const useRepositories = () => {
+// Now accepting variables (e.g. { orderBy, orderDirection }) as a parameter.
+const useRepositories = (variables) => {
   // Execute the query using Apollo's useQuery() hook.
   // useQuery() returns an object containing the response data, errors, loading status, and a function to manually re-run the query.
   const { data, error, loading, refetch } = useQuery(GET_REPOSITORIES, {
+    variables, // Pass variables to Apollo useQuery
     fetchPolicy: "cache-and-network" // Apply the 'cache-and-network' fetch policy.
     // It returns cached data immediately while simultaneously fetching updated data from the network. Thus, avoiding stale data.
   });

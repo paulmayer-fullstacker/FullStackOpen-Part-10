@@ -1,11 +1,14 @@
 // src/graphql/queries.js:
 
 import { gql } from "@apollo/client";
-// gql is a tagged template literal.
-// Query to fetch details for alle repositories.
+// Query to fetch details for alle repositories. Newly parameterised with $orderBy and $orderDirection variable definitions.
+// User can now sort by CREATED_AT or RATING_AVERAGE in ASC/DESC order.
 export const GET_REPOSITORIES = gql`
-  query GetRepositories {
-    repositories {
+  query GetRepositories(
+    $orderBy: AllRepositoriesOrderBy
+    $orderDirection: OrderDirection
+  ) {
+    repositories(orderBy: $orderBy, orderDirection: $orderDirection) {
       edges {
         node {
           id

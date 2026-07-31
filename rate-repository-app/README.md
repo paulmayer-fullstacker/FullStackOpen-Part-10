@@ -344,6 +344,75 @@ Beyond centralizing background colors and padding, the component:
 
 Exercise-22 triggered a significant discontinuity shift in my design and coding practices. The techniques (referred to above) adopted for Exercise 22 should probably have been employed from the get-go. However, prior to Exercise-22, I had concentrated on one exercise at a time without regard for the bigger design picture.
 
+Devised parameterised queries to fulfil the three fetch requirements:
+
+Operatioin:
+
+```text
+query GetRepositories($orderBy: AllRepositoriesOrderBy, $orderDirection: OrderDirection) {
+  repositories(orderBy: $orderBy, orderDirection: $orderDirection) {
+    edges {
+      node {
+        id
+        fullName
+        ratingAverage
+        createdAt
+      }
+    }
+  }
+}
+```
+
+```text
+Variables:
+{
+  "orderBy": "CREATED_AT",
+  "orderDirection": "DESC"
+}
+```
+
+Variables:
+
+```text
+{
+  "orderBy": "RATING_AVERAGE",
+  "orderDirection": "DESC"
+}
+```
+
+Variables:
+
+```text
+{
+  "orderBy": "RATING_AVERAGE",
+  "orderDirection": "ASC"
+}
+```
+
+With a single parameterised query, we can send variables to our `useRepositories` custom hook. Apollo Client will send those parameters over the network, overriding the backend's default behavior whenever the user selects a different ordering principle (like Highest or Lowest rated).
+
+Using the React Native Picker component:
+
+```text
+npm install @react-native-picker/picker`
+```
+
+The repository ordering feature, in brief:
+
+1. **User Selection & State:** In `RepositoryList`, the `selectedOrder` state tracks the currently selected dropdown option (defaulting:`"LATEST"`).
+
+2. **Variable Translation:** A `switch` statement translates `selectedOrder` into the GraphQL variables expected by your schema (`orderBy` and `orderDirection`). For example, selecting `"Highest rated repositories"` sets `{ orderBy: "RATING_AVERAGE", orderDirection: "DESC" }`.
+
+3. **Data Fetching via Hook:** These variables are passed into `useRepositories(queryVariables)`, which forwards them to Apollo Client's `useQuery(GET_REPOSITORIES, { variables })`.
+
+4. **GraphQL Execution:** Apollo executes `GET_REPOSITORIES`, passing `orderBy` and `orderDirection` as arguments to the server. The GraphQL server returns the repository list sorted accordingly.
+
+5. **Header and List Rendering:** The presentational component (`RepositoryListContainer`) receives the fetched data and the picker state. It renders `<OrderPickerHeader/>` inside the `FlatList`'s `ListHeaderComponent` prop, so the dropdown stays pinned to the top of the list.
+
+6. **Re-rendering on Change:** When a user selects a new option from the dropdown, `setSelectedOrder` updates the state, triggering a re-render. `useRepositories` is called with the new query variables, and Apollo automatically fetches and displays the updated, re-ordered data.
+
+### Exercise 24
+
 ## END
 
 ---
