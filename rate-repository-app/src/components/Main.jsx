@@ -15,7 +15,7 @@ import theme from "../theme"; // Import the centralized theme configuration for 
 const styles = StyleSheet.create({
   container: {
     flex: 1, // Flex:1, makes the view expand to fill the entire available screen height and width.
-    backgroundColor: theme.colors.mainComponentBackground // Apply colour per Ex-5 instruction.
+    backgroundColor: theme.colors.mainComponentBackground || "#e1e4e8" // Apply main theme colour or fall back to light blue/grey.
   }
 });
 

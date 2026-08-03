@@ -119,7 +119,7 @@ At this point we handle authentication as a one-time request/response transactio
 
 To test: use this mutation in the SandBox to create a user with an appropriate password.
 
-```text
+```graphql
 mutation {
   createUser(user: { username: "myusername", password: "Pass(w0rd)" }) {
     id
@@ -164,7 +164,7 @@ In the Apollo Sandbox, use this mutation to retrieve an access token for a autho
 
 Operation
 
-```text
+```graphql
 mutation RetrievToken($credentials: AuthenticateInput!) {
   authenticate(credentials: $credentials) {
     accessToken
@@ -174,7 +174,7 @@ mutation RetrievToken($credentials: AuthenticateInput!) {
 
 Variables
 
-```text
+```graphql
 {
   "credentials": {
     "username"myusername",
@@ -187,7 +187,7 @@ We can then confirm the validity of the access token, by using it to identify it
 
 Operation
 
-```text
+```graphql
 query GetCurrentUser {
   me {
     id
@@ -202,37 +202,35 @@ Headers
 Authorization Bearer <Access token, with no quotation marks>
 ```
 
-Having completed exercise 16, logging code added to fully test the SignOut() function:
+Having completed exercise 16, logging code added to fully test the `SignOut()` function:
 
-```text
+```js
 const signOut = async () => {
-    // Because JavaScript is single-threaded and handles asynchronous operations via an event loop, it will not move on to
-    // apolloClient.resetStore() until the promise returned by authStorage.removeAccessToken() has successfully resolved.
-    // However, just in case the device storage fails to clear, we use a try/catch:
-    try{
-      // First: Remove the token from storage.
-      console.log('Initiating sign out. Removing token.');
-      await authStorage.removeAccessToken();
+  // Because JavaScript is single-threaded and handles asynchronous operations via an event loop, it will not move on to
+  // apolloClient.resetStore() until the promise returned by authStorage.removeAccessToken() has successfully resolved.
+  // However, just in case the device storage fails to clear, we use a try/catch:
+  try {
+    // First: Remove the token from storage.
+    console.log("Initiating sign out. Removing token.");
+    await authStorage.removeAccessToken();
 
-      // Then: Reset the store to clear the cache and re-execute active queries (i.e., the 'me' query).
-      console.log('Token removed. Resetting Apollo store.');
-      await apolloClient.resetStore();
-      // At this point extract the state of the Apollo cache, and test for null (empty).
-      const apolloCacheContents = apolloClient.cache.extract();
-      if (apolloCacheContents?.ROOT_QUERY?.me) {
-        console.log('Cache still contains user data:', apolloCacheContents);
-      }
-      else {
-        // Message to reflect success
-        console.log('The Apollo store is reset (User === null)!');
-      }
+    // Then: Reset the store to clear the cache and re-execute active queries (i.e., the 'me' query).
+    console.log("Token removed. Resetting Apollo store.");
+    await apolloClient.resetStore();
+    // At this point extract the state of the Apollo cache, and test for null (empty).
+    const apolloCacheContents = apolloClient.cache.extract();
+    if (apolloCacheContents?.ROOT_QUERY?.me) {
+      console.log("Cache still contains user data:", apolloCacheContents);
+    } else {
+      // Message to reflect success
+      console.log("The Apollo store is reset (User === null)!");
     }
-    catch (error) {
-      console.error("Sign out sequence failed:", error);
-    }
-  };
+  } catch (error) {
+    console.error("Sign out sequence failed:", error);
+  }
+};
 
-  return signOut;
+return signOut;
 ```
 
 ## Chapter 5
@@ -348,8 +346,11 @@ Devised parameterised queries to fulfil the three fetch requirements:
 
 Operatioin:
 
-```text
-query GetRepositories($orderBy: AllRepositoriesOrderBy, $orderDirection: OrderDirection) {
+```graphql
+query GetRepositories(
+  $orderBy: AllRepositoriesOrderBy
+  $orderDirection: OrderDirection
+) {
   repositories(orderBy: $orderBy, orderDirection: $orderDirection) {
     edges {
       node {
@@ -363,8 +364,9 @@ query GetRepositories($orderBy: AllRepositoriesOrderBy, $orderDirection: OrderDi
 }
 ```
 
-```text
 Variables:
+
+```graphql
 {
   "orderBy": "CREATED_AT",
   "orderDirection": "DESC"
@@ -373,7 +375,7 @@ Variables:
 
 Variables:
 
-```text
+```graphql
 {
   "orderBy": "RATING_AVERAGE",
   "orderDirection": "DESC"
@@ -382,7 +384,7 @@ Variables:
 
 Variables:
 
-```text
+```graphql
 {
   "orderBy": "RATING_AVERAGE",
   "orderDirection": "ASC"
@@ -412,6 +414,35 @@ The repository ordering feature, in brief:
 6. **Re-rendering on Change:** When a user selects a new option from the dropdown, `setSelectedOrder` updates the state, triggering a re-render. `useRepositories` is called with the new query variables, and Apollo automatically fetches and displays the updated, re-ordered data.
 
 ### Exercise 24
+
+The `GetRepositories` query has been updated to include a `searchKeyword` field:
+
+```graphql
+query GetRepositories(
+  $orderBy: AllRepositoriesOrderBy
+  $orderDirection: OrderDirection
+  $searchKeyword: String
+) {
+  repositories(
+    orderBy: $orderBy
+    orderDirection: $orderDirection
+    searchKeyword: $searchKeyword
+  ) {
+    edges {
+      node {
+        id
+        fullName
+        ratingAverage
+        reviewCount
+      }
+    }
+  }
+}
+```
+
+Simplified `RepositoryList` component by devolving presentational responsibility (rendering the repository list, searchbar, and ordering picker), to `RepositoryListContainer` component.
+
+Implemented state debouncing (500ms) with `useDebounce` to optimize network requests while searching.
 
 ## END
 
