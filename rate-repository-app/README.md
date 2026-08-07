@@ -174,10 +174,10 @@ mutation RetrievToken($credentials: AuthenticateInput!) {
 
 Variables
 
-```graphql
+```json
 {
   "credentials": {
-    "username"myusername",
+    "username": "myusername",
     "password": "Pass(w0rd)"
   }
 }
@@ -366,7 +366,7 @@ query GetRepositories(
 
 Variables:
 
-```graphql
+```json
 {
   "orderBy": "CREATED_AT",
   "orderDirection": "DESC"
@@ -375,7 +375,7 @@ Variables:
 
 Variables:
 
-```graphql
+```json
 {
   "orderBy": "RATING_AVERAGE",
   "orderDirection": "DESC"
@@ -384,7 +384,7 @@ Variables:
 
 Variables:
 
-```graphql
+```json
 {
   "orderBy": "RATING_AVERAGE",
   "orderDirection": "ASC"
@@ -443,6 +443,67 @@ query GetRepositories(
 Simplified `RepositoryList` component by devolving presentational responsibility (rendering the repository list, searchbar, and ordering picker), to `RepositoryListContainer` component.
 
 Implemented state debouncing (500ms) with `useDebounce` to optimize network requests while searching.
+
+### Exercise 25
+
+The `getCurrentUser` query has been modified to accommodate the `includeReviews` boolean variable:
+
+```graphql
+query getCurrentUser($includeReviews: Boolean = false) {
+  # Added optional boolean argument with false default.
+  me {
+    id
+    username
+    reviews @include(if: $includeReviews) {
+      # Conditionally fetch reviews using the @include directive.
+      edges {
+        node {
+          id
+          text
+          rating
+          createdAt
+          repository {
+            # Fetch repository name to display as the header in the "My reviews" list.
+            id
+            fullName
+          }
+        }
+      }
+    }
+  }
+}
+```
+
+Variables:
+
+```json
+{
+  "includeReviews": true
+}
+```
+
+To test this in the sandbox, first use the Authenticate mutation to retrieve an access key for the authenticated user.
+
+```graphql
+mutation RetrieveToken($credentials: AuthenticateInput!) {
+  authenticate(credentials: $credentials) {
+    accessToken
+  }
+}
+```
+
+Variables:
+
+```json
+{
+  "credentials": {
+    "username": "myusername",
+    "password": "Pass(w0rd)"
+  }
+}
+```
+
+Having verified the new query in the sandbox, we implemented the container-presentation pattern for the review list: a smart component (`MyReviews.jsx`) with the logic to handle data fetching, via a custom hook (`useMyReviews.js`), and a presentation component (`MyReviewsContainer.jsx`) to render the list. The view reuses the existing `ReviewItem` and `ItemSeparator` components inside a `FlatList`.
 
 ## END
 

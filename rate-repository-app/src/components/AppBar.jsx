@@ -1,7 +1,8 @@
 // /src/components/AppBar.jsx:
 //  Defining the top-level nav bar for the app. Utilising a custom styling theme and a reusable sub-component (AppBarTab),
 //  to create a consistent header that responds to user touch and manages device status bar spacing for mobile devices.
-// Updatedto offer a 'Create Review' tab, if the user is successfully signed in. Also, offer Sign Up tab, alongside Sign In, if not signed in.
+// Updated to offer a 'Create Review' tab and a 'My reviews' tab, if the user is successfully signed in.
+// Also, offer Sign Up tab, alongside Sign In, if not signed in.
 
 import { View, StyleSheet, ScrollView, Pressable } from "react-native"; // Pull core functions blocks from React Native.
 import { Link } from "react-router-native"; // Import Link from react-router-native, to manage routing transitions.
@@ -10,7 +11,7 @@ import theme from "../theme"; // Imports our centralised design themes (colours,
 import Text from "./Text"; // Import pre-styled Text component to maintain consistent typography.
 
 import { useQuery } from "@apollo/client/react"; // Import useQuery hook from Apollo Client React, to handle GraphQL data fetching and lifecycle states.
-import { GET_CURRENTUSER } from "../graphql/queries"; // Import the ME/GET_CURRENTUSER from queries.
+import { GET_CURRENTUSER } from "../graphql/queries"; // Import the ME/GET_CURRENTUSER (now inc. includeReviews), from queries.
 import useSignOut from "../hooks/useSignOut"; // Import our useSignOut custom hook.
 
 // Define styles for the AppBar and its internal tabs.
@@ -88,8 +89,9 @@ const AppBar = () => {
         {/* Conditional rendering based on sign-in status */}
         {user ? (
           <>
-            {/* // if user not null, user is signed in. So, offer 'Create Review' and 'Sign Out'. */}
+            {/* // if user not null, user is signed in. So, offer 'Create Review', 'My reviews"' and 'Sign Out'. */}
             <AppBarTab title="Create a review" to="/create-review" />
+            <AppBarTab title="My reviews" to="/my-reviews" />
             <AppBarTab title="Sign out" onPress={signOut} />
             {/* onPress={signOut} forces our conditional logic in AppBarTab to switch from an inactive routing link 
                to an active <Pressable> node that fires the actual state-clearing sequence. */}

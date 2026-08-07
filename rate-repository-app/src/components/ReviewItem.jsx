@@ -1,5 +1,6 @@
 // src/components/ReviewItem.jsx:
-// Presentational component responsible for rendering a single repository review card.
+// Reusable presentational component responsible for rendering a review card.
+// Dynamically renders either the author's username (single repository review card), or the repository title (myReviews), as the header.
 
 import { View, StyleSheet } from "react-native";
 import { format, parseISO } from "date-fns"; // Date formatting functions.
@@ -33,8 +34,8 @@ const styles = StyleSheet.create({
   contentContainer: {
     flex: 1
   },
-  // Username text styling.
-  usernameText: {
+  // Header text styling. Renamed from usernameText to reflect generic header usage
+  headerText: {
     marginBottom: 2
   },
   // Formatted date styling.
@@ -49,6 +50,9 @@ const ReviewItem = ({ review }) => {
     ? format(parseISO(review.createdAt), "dd MMM yyyy")
     : "";
 
+  // Dynamically pick username (repo view) or repository full name (user's review list view)
+  const headerTitle = review.user?.username || review.repository?.fullName;
+
   return (
     <View style={styles.container}>
       {/* Left: Circular Rating Badge */}
@@ -58,8 +62,9 @@ const ReviewItem = ({ review }) => {
 
       {/* Right: Review Details */}
       <View style={styles.contentContainer}>
-        <Text fontWeight="bold" style={styles.usernameText}>
-          {review.user?.username}
+        {/* Header displays username OR repository title depending on context */}
+        <Text fontWeight="bold" style={styles.headerText}>
+          {headerTitle}
         </Text>
         <Text color="textSecondary" style={styles.dateText}>
           {formattedDate}

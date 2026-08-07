@@ -1,11 +1,12 @@
 // /src/components/Main.jsx:
 // Structural layout wrapper, handling environment-specific styling like the status bar height for safe area rendering.
-// Updated to register the create-review route and the signup route.
+// Updated to register the create-review, signup, and my-reviews routes.
 import { StyleSheet, View } from "react-native"; // Import core layout components and styling utilities from React Native.
 import { Route, Routes, Navigate } from "react-router-native"; // Import routing components for navigating within the mobile app.
 import RepositoryList from "./RepositoryList"; // Import the list of items.
 import SingleRepositoryView from "./SingleRepositoryView"; // Import the SingleRepositoryView component.
 import CreateReview from "./CreateReview"; // Import the component for the CreateReview screen.
+import MyReviews from "./MyReviews"; // Import the MyReviews container component.
 import SignIn from "./SignIn"; // Import the component for the SignIn screen.
 import SignUp from "./SignUp"; // Import component for the SignUp view.
 import AppBar from "./AppBar"; // Import the top navigation bar component.
@@ -32,6 +33,8 @@ const Main = () => {
         <Route path="/" element={<RepositoryList />} />
         {/* Create review page route Route mapping /create-review path to the CreateReview smart component */}
         <Route path="/create-review" element={<CreateReview />} />
+        {/* My reviews page route: mapping /my-reviews path to the MyReviews smart component */}
+        <Route path="/my-reviews" element={<MyReviews />} />
         {/* Register the sign-in page route: When the path matches "/signin", render the SignIn component. */}
         <Route path="/signin" element={<SignIn />} />
         {/* Register sign-up route: When the path matches "/signupn", render the SignUp component. */}

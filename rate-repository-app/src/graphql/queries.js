@@ -30,15 +30,33 @@ export const GET_REPOSITORIES = gql`
     }
   }
 `; // The GraphQL query must be enclosed in backticks
-// Query to fetch details (UserName and Id) of the current user.
+
+// Updated Query to fetch details of the current user, optionally including their reviews.
+// Added optional boolean argument with false default. Conditionally fetch reviews using the @include directive.
+// Also, fetch repository name to display as the header in the "My reviews" list.
 export const GET_CURRENTUSER = gql`
-  query getCurrentUser {
+  query getCurrentUser($includeReviews: Boolean = false) {
     me {
       id
       username
+      reviews @include(if: $includeReviews) {
+        edges {
+          node {
+            id
+            text
+            rating
+            createdAt
+            repository {
+              id
+              fullName
+            }
+          }
+        }
+      }
     }
   }
 `;
+
 // Query to fetch details for a single repository by Id.
 export const GET_ONE_REPOSITORY = gql`
   query GetRepository($id: ID!) {
